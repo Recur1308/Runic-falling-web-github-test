@@ -104,17 +104,37 @@
         });
       }
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      for (let i = 0; i < 15; i++) {
-        setTimeout(function () {
-          const raindropsAnimation = new RaindropsAnimation()
-        }, i * 350);
+    class Runic_Stationary_Copy {
+      constructor() {
+        this.rainContainer = document.querySelector('.rain');
+        this.images = [
+          ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
+            'static/img/6.png', 'static/img/7.png', 'static/img/8.png', 'static/img/9.png', 'static/img/10.png',
+            'static/img/11.png', 'static/img/12.png', 'static/img/13.png', 'static/img/14.png', 'static/img/15.png',
+            'static/img/16.png', 'static/img/17.png', 'static/img/18.png', 'static/img/19.png', 'static/img/20.png',
+            'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
+            'static/img/26.png', 'static/img/27.png'
+          ]
+        ];
+        for (let i = 0; i < 1; i++) {
+          setTimeout(() => this.create(), i * 200);
+        }
       }
 
 
+      create() {
+        console.log("Creating Runic Copy");
+      }
 
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+      for (let i = 0; i < 10; i++) {
+        setTimeout(function () {
+          const raindropsAnimation = new RaindropsAnimation()
+          const runic_stationary_copy = new Runic_Stationary_Copy();
+        }, i * 350);
+      }
 
     });
   </script>
