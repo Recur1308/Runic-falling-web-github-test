@@ -65,7 +65,7 @@
 
         const animationDuration = parseFloat(raindrop.style.animationDuration) * 1000;
         const imageList = this.images[Math.floor(Math.random() * this.images.length)];
-        const intervalTime = animationDuration / (imageList.length * 4);
+        const intervalTime = animationDuration / (imageList.length * 2);
         let imageIndex = 0;
 
         setInterval(() => {
@@ -115,31 +115,63 @@
           'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
           'static/img/26.png', 'static/img/27.png'
         ];
-
-        // Start the animation
-        this.startAnimation();
+        for (let i = 0; i < 1; i++) {
+          setTimeout(() => this.createRaindrop(), i * 200);
+        }
       }
 
-      startAnimation() {
-        let currentIndex = 0;
+      createRaindropCopy() {
+        const raindrop = document.createElement('div');
+        raindrop.classList.add('raindrop');
+        raindrop.style.left = Math.random() * 100 + '%';
+        raindrop.style.top = '0'; // Set the initial top position to 0
+        this.rainContainer.appendChild(raindrop);
 
-        const animateNextImage = () => {
-          if (currentIndex < this.images.length) {
-            const image = new Image();
-            image.src = this.images[currentIndex];
-            this.rainContainer.appendChild(image);
+        const imageList = this.images[Math.floor(Math.random() * this.images.length)];
+        const intervalTime = animationDuration / (imageList.length * 4);
+        let imageIndex = 0;
 
-            currentIndex++;
-            setTimeout(animateNextImage, 200); // Delay between images
-          }
-        };
+        setInterval(() => {
+          raindrop.style.backgroundImage = `url('${imageList[imageIndex]}')`;
+          imageIndex = (imageIndex + 1) % imageList.length;
+        }, intervalTime);
+      
 
-        animateNextImage();
+        // // Falling animation
+        // const fallAnimationTime = animationDuration * 0.8;
+        // const startY = 0; // Start falling from the top of the container
+        // const endY = this.rainContainer.clientHeight; // End falling at the bottom of the container
+        // const startTime = performance.now();
+
+        // function animateFall(timestamp) {
+        //   const progress = (timestamp - startTime) / fallAnimationTime;
+        //   const newY = startY + (endY - startY) * progress;
+        //   raindrop.style.top = newY + 'px';
+
+        //   if (progress < 1) {
+        //     requestAnimationFrame(animateFall);
+        //   } else {
+        //     // When the raindrop reaches the bottom, trigger the event
+        //     raindrop.dispatchEvent(new CustomEvent('raindropReachedBottom', { detail: raindrop }));
+        //   }
+        // }
+
+        // requestAnimationFrame(animateFall);
+
+        // Event listener to remove the raindrop when it reaches the bottom
+        //   raindrop.addEventListener('raindropReachedBottom', (event) => {
+        //     const reachedRaindrop = event.detail;
+        //     reachedRaindrop.remove();
+        //     for (let i = 0; i < 1; i++) {
+        //       const raindropsAnimation = new RaindropsAnimation()
+        //     }
+        //   });
       }
     }
 
+
     // Create an instance of the class
-    const runicCopy = new Runic_Stationary_Copy();
+    //const runicCopy = new Runic_Stationary_Copy();
 
 
     document.addEventListener('DOMContentLoaded', () => {
