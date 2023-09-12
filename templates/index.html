@@ -103,7 +103,7 @@
           }
         });
       }
-    }
+     }
     class Runic_Stationary_Copy {
       constructor() {
         this.rainContainer = document.querySelector('.rain');
@@ -143,14 +143,11 @@
     }
 
 
-    // Create an instance of the class
-    //const runicCopy = new Runic_Stationary_Copy();
-
 
     document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < 10; i++) {
         setTimeout(function () {
-          const raindropsAnimation = new RaindropsAnimation()
+          //const raindropsAnimation = new RaindropsAnimation()
           const runic_stationary_copy = new Runic_Stationary_Copy();
         }, i * 350);
       }
