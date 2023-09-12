@@ -2,157 +2,164 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raindrops Animation</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: #d1ecf1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raindrops Animation</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #d1ecf1;
+    }
 
-        .rain {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-        }
+    .rain {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
 
-        .raindrop {
-            position: absolute;
-            width: 10px;
-            height: 20px;
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            opacity: 1;
-            transition: opacity 2s;
-        }
-    </style>
+    .raindrop {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 1;
+      transition: opacity 2s;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="rain"></div>
+  <div class="rain"></div>
 
-    <script>
-        class RaindropsAnimation {
-            constructor() {
-                this.rainContainer = document.querySelector('.rain');
-                this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
+  <script>
+    class RaindropsAnimation {
+      constructor() {
+        this.rainContainer = document.querySelector('.rain');
+        this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
           'static/img/6.png', 'static/img/7.png', 'static/img/8.png', 'static/img/9.png', 'static/img/10.png',
           'static/img/11.png', 'static/img/12.png', 'static/img/13.png', 'static/img/14.png', 'static/img/15.png',
           'static/img/16.png', 'static/img/17.png', 'static/img/18.png', 'static/img/19.png', 'static/img/20.png',
           'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
           'static/img/26.png', 'static/img/27.png'];
-                this.createRaindrop();
-            }
+        this.createRaindrop();
+      }
 
-            createRaindrop() {
-                this.raindrop = document.createElement('div');
-                this.raindrop.classList.add('raindrop');
-                this.resetRaindrop();
-                this.rainContainer.appendChild(this.raindrop);
-                this.animateBackgroundImages();
-                this.animateFall();
-            }
+      createRaindrop() {
+        this.raindrop = document.createElement('div');
+        this.raindrop.classList.add('raindrop');
+        this.resetRaindrop();
+        this.rainContainer.appendChild(this.raindrop);
+        this.animateBackgroundImages();
+        this.animateFall();
+      }
 
-            resetRaindrop() {
-                this.raindrop.style.left = Math.random() * 100 + '%';
-                this.raindrop.style.top = '0';
-            }
+      resetRaindrop() {
+        this.raindrop.style.left = Math.random() * 100 + '%';
+        this.raindrop.style.top = '0';
+      }
 
-            animateBackgroundImages() {
-                let imageIndex = 0;
-                const changeSpeed = 100; // faster image change
+      animateBackgroundImages() {
+        let imageIndex = 0;
+        const changeSpeed = 80; // faster image change
 
-                if (this.imageChangeInterval) clearInterval(this.imageChangeInterval);  // Clear previous interval if exists
+        if (this.imageChangeInterval) clearInterval(this.imageChangeInterval);  // Clear previous interval if exists
 
-                this.imageChangeInterval = setInterval(() => {
-                    this.raindrop.style.backgroundImage = `url('${this.images[imageIndex]}')`;
-                    imageIndex = (imageIndex + 1) % this.images.length;
-                }, changeSpeed);
-            }
+        this.imageChangeInterval = setInterval(() => {
+          this.raindrop.style.backgroundImage = `url('${this.images[imageIndex]}')`;
+          imageIndex = (imageIndex + 1) % this.images.length;
+        }, changeSpeed);
+      }
 
-            animateFall() {
-                const fallAnimationTime = 4000;
-                const startY = 0;
-                const endY = this.rainContainer.clientHeight;
-                const startTime = performance.now();
+      animateFall() {
+        const fallAnimationTime = 4000;
+        const startY = 0;
+        const endY = this.rainContainer.clientHeight;
+        const startTime = performance.now();
 
-                const animate = (timestamp) => {
-                    const progress = (timestamp - startTime) / fallAnimationTime;
-                    const newY = startY + (endY - startY) * progress;
-                    this.raindrop.style.top = newY + 'px';
+        if (this.runicTimeout) clearTimeout(this.runicTimeout);  // Clear any existing timeouts
 
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    } else {
-                        this.resetRaindrop();
-                        this.animateFall();
-                    }
-                }
+        const spawnCopy = () => {
+          new Runic_Stationary_Copy(this.raindrop.getBoundingClientRect().top, this.raindrop.style.left);
+          const randomInterval = 400 + Math.random() * 200;  // random time between 400ms to 600ms
+          this.runicTimeout = setTimeout(spawnCopy, randomInterval);
+        };
+        spawnCopy();
 
-                requestAnimationFrame(animate);
+        const animate = (timestamp) => {
+          const progress = (timestamp - startTime) / fallAnimationTime;
+          const newY = startY + (endY - startY) * progress;
+          this.raindrop.style.top = newY + 'px';
 
-                this.runicInterval = setInterval(() => {
-                    new Runic_Stationary_Copy(this.raindrop.getBoundingClientRect().top, this.raindrop.style.left);
-                }, 1000); // create copy every second
-            }
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            clearTimeout(this.runicTimeout);  // Clear the timeout for spawning copies
+            this.resetRaindrop();
+            this.animateFall();
+          }
         }
 
-        class Runic_Stationary_Copy {
-            constructor(topPosition, leftPosition) {
-                this.rainContainer = document.querySelector('.rain');
-                this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
+        requestAnimationFrame(animate);
+      }
+
+    }
+
+    class Runic_Stationary_Copy {
+      constructor(topPosition, leftPosition) {
+        this.rainContainer = document.querySelector('.rain');
+        this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
           'static/img/6.png', 'static/img/7.png', 'static/img/8.png', 'static/img/9.png', 'static/img/10.png',
           'static/img/11.png', 'static/img/12.png', 'static/img/13.png', 'static/img/14.png', 'static/img/15.png',
           'static/img/16.png', 'static/img/17.png', 'static/img/18.png', 'static/img/19.png', 'static/img/20.png',
           'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
           'static/img/26.png', 'static/img/27.png'];
-                this.raindrop = this.createRaindrop(topPosition, leftPosition);
-                this.animateBackgroundImages();
-                this.fadeOutAndRemove();
-            }
+        this.raindrop = this.createRaindrop(topPosition, leftPosition);
+        this.animateBackgroundImages();
+        this.fadeOutAndRemove();
+      }
 
-            createRaindrop(topPosition, leftPosition) {
-                const raindrop = document.createElement('div');
-                raindrop.classList.add('raindrop');
-                raindrop.style.left = leftPosition;
-                raindrop.style.top = topPosition + 'px';
-                this.rainContainer.appendChild(raindrop);
-                return raindrop;
-            }
+      createRaindrop(topPosition, leftPosition) {
+        const raindrop = document.createElement('div');
+        raindrop.classList.add('raindrop');
+        raindrop.style.left = leftPosition;
+        raindrop.style.top = topPosition + 'px';
+        this.rainContainer.appendChild(raindrop);
+        return raindrop;
+      }
 
-            animateBackgroundImages() {
-                let imageIndex = 0;
-                const changeSpeed = 100; // faster image change
+      animateBackgroundImages() {
+        let imageIndex = 0;
+        const changeSpeed = 80; // faster image change
 
-                this.imageChangeInterval = setInterval(() => {
-                    this.raindrop.style.backgroundImage = `url('${this.images[imageIndex]}')`;
-                    imageIndex = (imageIndex + 1) % this.images.length;
-                }, changeSpeed);
-            }
+        this.imageChangeInterval = setInterval(() => {
+          this.raindrop.style.backgroundImage = `url('${this.images[imageIndex]}')`;
+          imageIndex = (imageIndex + 1) % this.images.length;
+        }, changeSpeed);
+      }
 
-            fadeOutAndRemove() {
-                setTimeout(() => {
-                    this.raindrop.style.opacity = '0';
-                    setTimeout(() => {
-                        clearInterval(this.imageChangeInterval); // Stop changing images once it's removed
-                        this.rainContainer.removeChild(this.raindrop);
-                    }, 2000); // Remove from DOM after 2s (once faded out)
-                }, 2000); // Start fading out after 2s
-            }
-        }
+      fadeOutAndRemove() {
+        setTimeout(() => {
+          this.raindrop.style.opacity = '0';
+          setTimeout(() => {
+            clearInterval(this.imageChangeInterval); // Stop changing images once it's removed
+            this.rainContainer.removeChild(this.raindrop);
+          }, 2000); // Remove from DOM after 2s (once faded out)
+        }, 1000); // Start fading out after 2s
+      }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => {
-                    new RaindropsAnimation();
-                }, i * 350);
-            }
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+      for (let i = 0; i < 7; i++) {
+        setTimeout(() => {
+          new RaindropsAnimation();
+        }, i * 350);
+      }
+    });
 
-    </script>
+  </script>
 
 </body>
 
