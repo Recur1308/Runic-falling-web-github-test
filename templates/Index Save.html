@@ -38,12 +38,14 @@
     class RaindropsAnimation {
       constructor() {
         this.rainContainer = document.querySelector('.rain');
-        this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
+        this.images = [
+          'static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
           'static/img/6.png', 'static/img/7.png', 'static/img/8.png', 'static/img/9.png', 'static/img/10.png',
           'static/img/11.png', 'static/img/12.png', 'static/img/13.png', 'static/img/14.png', 'static/img/15.png',
           'static/img/16.png', 'static/img/17.png', 'static/img/18.png', 'static/img/19.png', 'static/img/20.png',
           'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
-          'static/img/26.png', 'static/img/27.png'];
+          'static/img/26.png', 'static/img/27.png'
+        ];
         this.createRaindrop();
       }
 
@@ -57,9 +59,14 @@
       }
 
       resetRaindrop() {
-        this.raindrop.style.left = Math.random() * 100 + '%';
+        const numberOfColumns = 30; // Changed from 10 to 20
+        const columnWidth = 100 / numberOfColumns;
+        const selectedColumn = Math.floor(Math.random() * numberOfColumns);
+        const leftPosition = (selectedColumn * columnWidth) + (columnWidth / 2) - 0.5; // Subtracting 0.5% to center the 1% wide raindrop in the column
+        this.raindrop.style.left = leftPosition + '%';
         this.raindrop.style.top = '0';
       }
+
 
       animateBackgroundImages() {
         let imageIndex = 0;
@@ -104,18 +111,19 @@
 
         requestAnimationFrame(animate);
       }
-
     }
 
     class Runic_Stationary_Copy {
       constructor(topPosition, leftPosition) {
         this.rainContainer = document.querySelector('.rain');
-        this.images = ['static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
+        this.images = [
+          'static/img/1.png', 'static/img/2.png', 'static/img/3.png', 'static/img/4.png', 'static/img/5.png',
           'static/img/6.png', 'static/img/7.png', 'static/img/8.png', 'static/img/9.png', 'static/img/10.png',
           'static/img/11.png', 'static/img/12.png', 'static/img/13.png', 'static/img/14.png', 'static/img/15.png',
           'static/img/16.png', 'static/img/17.png', 'static/img/18.png', 'static/img/19.png', 'static/img/20.png',
           'static/img/21.png', 'static/img/22.png', 'static/img/23.png', 'static/img/24.png', 'static/img/25.png',
-          'static/img/26.png', 'static/img/27.png'];
+          'static/img/26.png', 'static/img/27.png'
+        ];
         this.raindrop = this.createRaindrop(topPosition, leftPosition);
         this.animateBackgroundImages();
         this.fadeOutAndRemove();
@@ -146,8 +154,8 @@
           setTimeout(() => {
             clearInterval(this.imageChangeInterval); // Stop changing images once it's removed
             this.rainContainer.removeChild(this.raindrop);
-          }, 2000); // Remove from DOM after 2s (once faded out)
-        }, 1000); // Start fading out after 2s
+          }, 1500); // Remove from DOM after 2s (once faded out)
+        }, 500); // Start fading out after 2s
       }
     }
 
@@ -155,7 +163,7 @@
       for (let i = 0; i < 7; i++) {
         setTimeout(() => {
           new RaindropsAnimation();
-        }, i * 350);
+        }, i * 550);
       }
     });
 
